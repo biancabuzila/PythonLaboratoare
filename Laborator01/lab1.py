@@ -6,7 +6,9 @@ def gcd(a, b):
         return gcd(b%a, a)
     else:
         return b
-
+'''
+inainte sa aplici map cu int peste input, ar trebui validat input-ul, map nu vede si ignora input prost peste care nu se poate aplica functia data
+'''
 numbers = list(map(int, input("Enter numbers: ").split()))
 if len(numbers) == 0:
     print("No numbers introduced")
@@ -27,6 +29,9 @@ def numberOfVowels(string):
 print(numberOfVowels("computer science"))
 
 #3. Write a script that receives two strings and prints the number of occurrences of the first string in the second.
+'''
+e ff bine, multi colegi au omis cazuri de genul si au aplicat direct count()
+'''
 def occurences(str1, str2):
     results = 0
     for i in range(len(str2)):
@@ -119,6 +124,9 @@ print(extractNumber("An apple is 123 USD"))
 print(extractNumber("abc123abc78"))
 
 #8. Write a function that counts how many bits with value 1 a number has. For example for number 24, the binary format is 00011000, meaning 2 bits with value "1"
+'''
+nu mai trebuia sa aplici replace aici, puteai direct count
+'''
 def countBits1(x):
     return (bin(x).replace("0b","")).count("1")
 print(countBits1(77))
