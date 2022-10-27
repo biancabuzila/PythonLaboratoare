@@ -103,6 +103,10 @@ print(spectators(matrix))
 
 # 10. Write a function that receives a variable number of lists and returns a list of tuples as follows: the first tuple contains the first items in the lists, the second element contains the items on the position 2 in the lists, etc. Ex: for lists [1,2,3], [5,6,7], ["a", "b", "c"] return: [(1, 5, "a "), (2, 6, "b"), (3, 7, "c")]. 
 #Note: If input lists do not have the same number of items, missing items will be replaced with None to be able to generate max ([len(x) for x in input_lists]) tuples.
+'''
+puteai sa vezi cum ai putea folosi zip() dupa ce padai listele cu ''
+'''
+
 def tuples(*lists):
     length = max([len(x) for x in lists])
     tuples_list = []
