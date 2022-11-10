@@ -133,11 +133,18 @@ def add_numbers(a, b):
     return a + b
 
 def print_arguments(function):
-    def fun(*args, **keyargs):
+    # def fun(*args, **keyargs):
+    #     print("Arguments are: " , end = "")
+    #     print(args, ", ", keyargs, sep = "")
+    #     return function(*args, **keyargs)
+    # return fun
+    code = """def fun(*args, **keyargs):
         print("Arguments are: " , end = "")
         print(args, ", ", keyargs, sep = "")
-        return function(*args, **keyargs)
-    return fun
+        return {function}(*args, **keyargs)""".format(function = function.__name__)
+    locals = {}
+    exec(code, globals(), locals)
+    return locals["fun"]
 
 # augmented_multiply_by_two = print_arguments(multiply_by_two)
 # x = augmented_multiply_by_two(10)
