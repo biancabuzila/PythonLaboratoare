@@ -1,6 +1,7 @@
 import random
 import sys
 import json
+import time
 import tkinter as tk
 
 
@@ -321,20 +322,25 @@ def draw_game_over():
     
     It updates the variable ``high_score``, displays the score and high score
     and creates a frame widget ``frame_end_game`` that contains two buttons:
-    one for playing the game again and one for exiting the game.
+    one for playing the game again and one for exiting the game. It updates
+    the dictionary ``scores`` by adding the key corresponding to the turn of 
+    the game with the value of the score.
     """
-    global high_score, frame_end_game
+    global high_score, frame_end_game, scores
 
     frame_score.destroy()
     frame_game.destroy()
 
+    turn = len(scores) + 1
+    scores["tura" + str(turn)] = score
+
     high_score = max(high_score, score)
-    scores = "Score: " + str(score) + "\nHigh score: " + str(high_score)
+    scores_text = "Score: " + str(score) + "\nHigh score: " + str(high_score)
 
     frame_end_game = tk.Frame(master=window, background="#6aa84f")
     frame_end_game.pack(anchor=tk.CENTER, expand=True)
 
-    label_scores = tk.Label(master=frame_end_game, text=scores, background="#38761d", foreground="white", font="Arial " + str((WIDTH + 100)//18) + " bold", padx=10, pady=10)
+    label_scores = tk.Label(master=frame_end_game, text=scores_text, background="#38761d", foreground="white", font="Arial " + str((WIDTH + 100)//18) + " bold", padx=10, pady=10)
     label_scores.pack(anchor=tk.CENTER, expand=True)
 
     button_play_again = tk.Button(master=frame_end_game, 
@@ -356,8 +362,18 @@ def draw_game_over():
 
 
 def exit_game():
-    """Destroys the game window."""
+    """Destroys the game window.
+    
+    It ends the game session and it writes in a json file with the name
+    corresponding to the current time the scores obtained during the
+    game session.
+    """
     window.destroy()
+
+    tobj = time.localtime()
+    file_scores_name = time.strftime("%Y-%m-%d_%H-%M-%S_", tobj) + ".json"
+    json_scores = json.dumps(scores)
+    open(file_scores_name, "wt").write(json_scores)
 
 
 def main():
@@ -366,9 +382,11 @@ def main():
     It sets globally the constants representing the configurations of the game.
     It initializes the variables used to store the snake, apple and scores.
     It initializes the frame and canvas widgets used to display different
-    interfaces depending on the state of the game.
+    interfaces depending on the state of the game. It initializes the
+    variable ``scores`` with an empty dictionary that will store the scores
+    obtained during the game session.
     """
-    global ROWS, COLUMNS, WIDTH, HEIGHT, SIZE, OBSTACLES, snake, score, high_score, ACTIONS, apple, window, frame_score, frame_game, canvas_game, frame_end_game, var
+    global ROWS, COLUMNS, WIDTH, HEIGHT, SIZE, OBSTACLES, snake, score, high_score, ACTIONS, apple, window, frame_score, frame_game, canvas_game, frame_end_game, var, scores
     configurations = config_game()
     if type(configurations) == str:
         print(configurations)
@@ -389,6 +407,8 @@ def main():
         frame_game = None
         canvas_game = None
         frame_end_game = None
+
+        scores = dict()
 
         window = tk.Tk()
         window.bind("<Key>", getAction)
